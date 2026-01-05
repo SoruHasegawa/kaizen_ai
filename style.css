@@ -1,0 +1,32 @@
+body {
+    background-color: #98fb98;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    /*ここまで縦横中央にするのに必要。100vh＝パソコン全画面*/
+}
+
+label {
+    font-size: 34px
+}
+
+form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    justify-content: center;
+    align-items: center;
+}
+
+input {
+    width: 240px;
+    min-height: 24px;
+    display: flex;
+    flex-direction: row;
+}
+
+button {
+    width: 60px;
+    min-height: 30px;
+}

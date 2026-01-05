@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+    <meta Charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1.0" >
+    <link rel="stylesheet" href="style.css">
+    <!--大きさを調整してくれるやつ-->
+</head>
+<header></header>
+<body>
+<form>
+  <label for="message">匿名で簡潔に意見を送信</label>
+  <input type="text" id="message" name="message" placeholder="ここに入力" maxlength="100">
+  <p><span id="charCount">0</span>/100</p>
+  <button id="btn" type="submit">送信</button>
+  <!--フォームの中に「タイトル <label>を押すと入力できる・入力欄<input type="text">・送信ボタン<button>」を入れる-->
+</form>
+<div id="result"></div>
+
+</body>
+</html>
+<script src="script.js"></script>
