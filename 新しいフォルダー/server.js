@@ -1,3 +1,17 @@
+//OpenAI呼び出し
+require(`dotenv`).config();
+const {OpenAIApi,Configuration}=require("openai");
+const configuration =new Configuration({apikey: process.env.OPENAI_API_KEY});
+
+const response=await openai.createChatCompletion({
+  model:"gpt-3.5-turbo",
+  messages:[
+    {role:"system",content:"文体を丁寧語に変換してください。"},
+    {role:"user",content:message}
+  ]
+});
+const converted =response.data.choices[0].message.content;
+
 const express = require('express');
 const cors = require('cors');
 const fs = require('fs');

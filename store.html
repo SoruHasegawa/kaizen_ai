@@ -8,23 +8,50 @@
   <link rel="stylesheet" href="style.css">
 </head>
 
-<main>
-  <h1>店舗側画面</h1>
+<body>
+  <main>
+    <h1>店舗側画面</h1>
 
-  <table id="opinionsTable" border="1">
-  <!--border="1"→「htmlで線をつけれる」-->
-    <thead>
-      <!--<tr>→「行（なので要素は縦並び）」、<th>→「ヘッダーセル（見出しなので太字・中央ぞろえ）」-->
-      <tr>
-        <th>ID</th>
-        <th>意見</th>
-        <th>日時</th>
-      </tr>
-    </thead>
-    <tbody>
+    <table id="opinionsTable" border="1">
+      <!--border="1"→「htmlで線をつけれる」-->
+      <thead>
+        <!--<tr>→「行（なので要素は縦並び）」、<th>→「ヘッダーセル（見出しなので太字・中央ぞろえ）」-->
+        <tr>
+          <th>ID</th>
+          <th>意見</th>
+          <th>日時</th>
+        </tr>
+      </thead>
+      <tbody>
 
-    </tbody>
-  </table>
-</main>
+      </tbody>
+    </table>
+  </main>
+
+  <script>
+    //１async→「関数内でawait→「非同期処理の完了を待つ構文」を使うためにある」
+    //２try→「エラーが起きても次の処理にすすめる！catchに。」
+    document.addEventListener('DOMContentLoaded', async () => {
+      const tableBody = document.querySelector('#opinionsTable tbody');
+      try {
+        const res = await fetch('http://localhost:3000/api/opinions');
+        const opinions = await res.json();
+        tableBody.innerHTML = '';
+
+        opinions.forEach(opinion => {
+          const tr = document.createElement('tr');
+          tr.innerHTML = `
+            <td>${opinion.id}</td>
+            <td>${opinion.message}</td>
+            <td>${new Date(opinion.createdAt).toLocaleString()}</td>
+          `;
+          tableBody.appendChild(tr);
+        });
+      } catch (e) {
+        tableBody.innerHTML = '<tr><td colspan="3">取得に失敗しました</td></tr>';
+      }
+    });
+  </script>
+</body>
 
 </html>
