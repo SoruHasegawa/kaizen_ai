@@ -1,16 +1,7 @@
-//OpenAI呼び出し
-require(`dotenv`).config();
-const {OpenAIApi,Configuration}=require("openai");
-const configuration =new Configuration({apikey: process.env.OPENAI_API_KEY});
 
-const response=await openai.createChatCompletion({
-  model:"gpt-3.5-turbo",
-  messages:[
-    {role:"system",content:"文体を丁寧語に変換してください。"},
-    {role:"user",content:message}
-  ]
-});
-const converted =response.data.choices[0].message.content;
+require('dotenv').config();
+const { OpenAI } = require('openai');
+const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
 
 const express = require('express');
 const cors = require('cors');
@@ -41,7 +32,7 @@ function writeOpinions(opinions) {
 
 // 従業員側：意見を投稿
 
-app.post('/api/opinions', (req, res) => {
+app.post('/api/opinions', async (req, res) => {
   // employee.htmlからはopinion、既存APIからはmessageで受け取る
   const message = typeof req.body?.message === 'string'
     ? req.body.message.trim()
@@ -54,10 +45,25 @@ app.post('/api/opinions', (req, res) => {
     return res.status(400).json({ error: 'message must be <= 100 chars' });
   }
 
+  let converted = message;
+  try {
+    const response = await openai.chat.completions.create({
+      model: 'gpt-3.5-turbo',
+      messages: [
+        { role: 'system', content: '文体を丁寧語に変換してください。' },
+        { role: 'user', content: message }
+      ]
+    });
+    converted = response.choices[0].message.content;
+  } catch (e) {
+    // OpenAIエラー時は元のメッセージをそのまま使う
+    console.error('OpenAI API error:', e.message);
+  }
+
   const opinions = readOpinions();
   const record = {
     id: Date.now(),
-    message,
+    message: converted,
     createdAt: new Date().toISOString(),
   };
 
