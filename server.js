@@ -50,7 +50,19 @@ app.post('/api/opinions', async (req, res) => {
     const response = await openai.chat.completions.create({
       model: 'gpt-3.5-turbo',
       messages: [
-        { role: 'system', content: '文体を丁寧語に変換してください。' },
+        {
+          role: 'system', content: `あなたは店舗運営コンサルタントです。
+アルバイトの意見を、店長向けの建設的な提案書に変換してください。
+
+【構成】
+1. 【改善ポイントの要約】：冒頭に1〜3つの箇条書き
+2. 【提案の詳細】：現状の課題、改善メリット、具体的アクション案
+
+【制約】
+- 感情的な言葉は運営リスク（離職・ミス等）に変換すること。
+- トーンは丁寧かつ協力的（〜と考えております等）にすること。
+- 店舗利益や効率向上に結びつけること。
+- 出力される文章は100文字以内であること。` },
         { role: 'user', content: message }
       ]
     });
